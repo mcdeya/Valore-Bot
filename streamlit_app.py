@@ -22,7 +22,7 @@ from langchain_classic.chains.combine_documents import create_stuff_documents_ch
 # ---------------------------------------------------------------------------
 # Page setup
 # ---------------------------------------------------------------------------
-st.set_page_config(page_title="VALORANT // LORE ARCHIVE", page_icon="🎯", layout="wide")
+st.set_page_config(page_title="VALORE BOT", page_icon="🎯", layout="wide")
 
 # ---------------------------------------------------------------------------
 # Design system — tactical HUD theme
@@ -419,10 +419,10 @@ if needs_build and groq_api_key:
 # ---------------------------------------------------------------------------
 SUGGESTED_QUESTIONS = [
     ("Locations", "Where is Ascent?"),
-    ("Locations", "What company is connected to Pearl?"),
     ("Agent", "What country is Fade from?"),
-    ("Agent", "Who is Raze?"),
     ("Timeline", "What is Radianite?"),
+    ("Locations", "What company is connected to Pearl?"),
+    ("Agent", "Who is Raze?"),
     ("Timeline", "When did the Alpha-Omega conflict begin?"),
 ]
 
