@@ -8,6 +8,7 @@ Run locally with:
 """
 
 import os
+
 import chromadb
 
 import streamlit as st
@@ -26,7 +27,7 @@ from langchain_classic.chains.combine_documents import create_stuff_documents_ch
 st.set_page_config(page_title="VALORE BOT", page_icon="🎯", layout="wide")
 
 # ---------------------------------------------------------------------------
-# Design system — tactical HUD theme
+# Design system (HUD)
 # ---------------------------------------------------------------------------
 st.markdown(
     """
@@ -289,7 +290,7 @@ if "pending_query" not in st.session_state:
     st.session_state.pending_query = None
 
 # ---------------------------------------------------------------------------
-# Sidebar — configuration
+# Sidebar (Config)
 # ---------------------------------------------------------------------------
 with st.sidebar:
     st.header("OPERATOR CONSOLE")
@@ -314,7 +315,6 @@ with st.sidebar:
     temperature = st.slider("Temperature", min_value=0.0, max_value=1.0, value=0.0, step=0.1)
     fallback_enabled = st.checkbox("Enable fallback instruction", value=True)
 
-    # Fixed defaults (not shown in the UI)
     chunk_size = 500
     chunk_overlap = 50
     model_name = "openai/gpt-oss-20b"
@@ -360,7 +360,7 @@ def build_rag_chain(repo_data_dir, chunk_size, chunk_overlap, top_k,
         embeddings = HuggingFaceEmbeddings(model_name="all-MiniLM-L6-v2")
         chromadb.api.client.SharedSystemClient.clear_system_cache()
         vectorstore = Chroma.from_documents(documents=documents, embedding=embeddings)
-        retriever = vectorstore.as_retriever(search_kwargs={"k": top_k}))
+        retriever = vectorstore.as_retriever(search_kwargs={"k": top_k})
 
         st.session_state.doc_count = len(raw_documents)
         st.session_state.chunk_count = len(documents)
@@ -417,7 +417,7 @@ if needs_build and groq_api_key:
         st.session_state.messages = []
 
 # ---------------------------------------------------------------------------
-# Suggestion chips (shown before the first message)
+# Suggestion chips
 # ---------------------------------------------------------------------------
 SUGGESTED_QUESTIONS = [
     ("Locations", "Where is Ascent?"),
@@ -485,7 +485,7 @@ if user_query:
         st.rerun()
 
 # ---------------------------------------------------------------------------
-# Footer / reset
+# Footer
 # ---------------------------------------------------------------------------
 st.divider()
 col1, col2 = st.columns([1, 5])
