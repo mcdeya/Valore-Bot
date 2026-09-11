@@ -8,6 +8,7 @@ Run locally with:
 """
 
 import os
+import chromadb
 
 import streamlit as st
 from langchain_community.document_loaders import DirectoryLoader, TextLoader
@@ -357,8 +358,9 @@ def build_rag_chain(repo_data_dir, chunk_size, chunk_overlap, top_k,
         documents = text_splitter.split_documents(raw_documents)
 
         embeddings = HuggingFaceEmbeddings(model_name="all-MiniLM-L6-v2")
+        chromadb.api.client.SharedSystemClient.clear_system_cache()
         vectorstore = Chroma.from_documents(documents=documents, embedding=embeddings)
-        retriever = vectorstore.as_retriever(search_kwargs={"k": top_k})
+        retriever = vectorstore.as_retriever(search_kwargs={"k": top_k}))
 
         st.session_state.doc_count = len(raw_documents)
         st.session_state.chunk_count = len(documents)
