@@ -3,14 +3,14 @@ RAG-Based Valorant Lore Chatbot — Streamlit App
 Pipeline: Document Loading -> Chunking -> all-MiniLM-L6-v2 Embeddings -> ChromaDB -> Groq (OpenAI GPT-OSS-20B)
 
 Run locally with:
-    pip install streamlit langchain-classic langchain-community langchain-groq langchain-huggingface chromadb pypdf unstructured sentence-transformers
+    pip install streamlit langchain-classic langchain-community langchain-groq langchain-huggingface chromadb pypdf sentence-transformers
     streamlit run streamlit_app.py
 """
 
 import os
 
 import streamlit as st
-from langchain_community.document_loaders import DirectoryLoader
+from langchain_community.document_loaders import DirectoryLoader, TextLoader
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain_huggingface import HuggingFaceEmbeddings
 from langchain_community.vectorstores import Chroma
@@ -337,7 +337,13 @@ def build_rag_chain(repo_data_dir, chunk_size, chunk_overlap, top_k,
     os.environ["GROQ_API_KEY"] = api_key
 
     def _load_and_index(source_dir):
-        loader = DirectoryLoader(source_dir, glob="**/*.*", show_progress=False)
+        loader = DirectoryLoader(
+            source_dir,
+            glob="**/*.txt",
+            loader_cls=TextLoader,
+            loader_kwargs={"encoding": "utf-8"},
+            show_progress=False,
+        )
         raw_documents = loader.load()
 
         if not raw_documents:
@@ -413,10 +419,10 @@ if needs_build and groq_api_key:
 # ---------------------------------------------------------------------------
 SUGGESTED_QUESTIONS = [
     ("Locations", "Where is Ascent?"),
-    ("Agent", "What country is Fade from?"),
-    ("Timeline", "What is Radianite?"),
     ("Locations", "What company is connected to Pearl?"),
+    ("Agent", "What country is Fade from?"),
     ("Agent", "Who is Raze?"),
+    ("Timeline", "What is Radianite?"),
     ("Timeline", "When did the Alpha-Omega conflict begin?"),
 ]
 
